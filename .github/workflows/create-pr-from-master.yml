@@ -17,7 +17,7 @@ jobs:
 
       - name: Create Pull Request
         id: cpr
-        uses: vsoch/pull-request-action@1.0.6
+        uses: vsoch/pull-request-action@update/check-env
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           PULL_REQUEST_FROM_BRANCH: master
