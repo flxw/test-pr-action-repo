@@ -1,0 +1,32 @@
+name: Build Hotfix / Deploy Beta
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  publish-hotfix:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout master Branch
+        uses: actions/checkout@v2
+        with:
+          ref: master
+          fetch-depth: 0 # get full history to be able to do merges
+
+      - name: Create Pull Request
+        id: cpr
+        uses: vsoch/pull-request-action@update/check-env
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PULL_REQUEST_FROM_BRANCH: master
+          PULL_REQUEST_BRANCH: develop
+          PULL_REQUEST_TEAM_REVIEWERS: flxw
+          PULL_REQUEST_TITLE: "[Automated Change] Merging master changes to develop"
+
+      - name: Check output
+        run: |
+          echo "Pull Request Number - ${{ steps.cpr.outputs.pull_request_number }}"
+          echo "Pull Request URL - ${{ steps.cpr.outputs.pull_request_url }}"
+
